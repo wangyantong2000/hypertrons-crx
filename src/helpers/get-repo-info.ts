@@ -31,3 +31,27 @@ export async function isPublicRepo() {
 export async function isPublicRepoWithMeta() {
   return (await isPublicRepo()) && (await metaStore.has(getRepoName()));
 }
+
+export async function isSingleFile(){
+  return pageDetect.isSingleFile();
+}
+export async  function getRepositoryInfo()
+{
+  return pageDetect.utils.getRepositoryInfo();
+}
+export async  function getCleanPathname()
+{
+  return pageDetect.utils.getCleanPathname();
+}
+export async  function getCleanGistPathname()
+{
+  return pageDetect.utils.getCleanGistPathname();
+}
+export async  function hasCode()
+{
+  return pageDetect.hasCode();
+}
+export async  function hasFiles()
+{
+  return pageDetect.hasFiles();
+}
