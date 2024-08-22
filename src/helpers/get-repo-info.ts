@@ -38,15 +38,6 @@ export async function isSingleFile() {
 export async function getRepositoryInfo() {
   return pageDetect.utils.getRepositoryInfo();
 }
-export async function getCleanPathname() {
-  return pageDetect.utils.getCleanPathname();
-}
-export async function getCleanGistPathname() {
-  return pageDetect.utils.getCleanGistPathname();
-}
 export async function hasCode() {
   return pageDetect.hasCode();
-}
-export async function hasFiles() {
-  return pageDetect.hasFiles();
 }
