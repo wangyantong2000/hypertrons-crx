@@ -5,10 +5,8 @@ import sleep from '../../../../helpers/sleep';
 import elementReady from 'element-ready';
 import $ from 'jquery';
 import { getNote } from './service';
-
 import iconSvgPath from './icon-svg-path';
 const featureId = features.getFeatureID(import.meta.url);
-
 function getCurrentBranch(): string | undefined {
   const pathParts = window.location.pathname.split('/');
   const branchIndex = pathParts.indexOf('tree') + 1;
@@ -43,7 +41,9 @@ const addNoteButton = async (): Promise<void | false> => {
   buttonElement.attr('aria-label', featureId);
   buttonElement.attr('data-testid', featureId);
   buttonElement.removeAttr('data-hotkey');
-  buttonElement.on('click', getNote);
+  buttonElement.on('click', () => {
+    getNote();
+  });
   const buttonSvgElement = buttonElement.find('svg');
   buttonSvgElement.attr('class', 'octicon octicon-note');
   buttonSvgElement.attr('viewBox', '0 0 1024 1024');
@@ -59,8 +59,7 @@ const addNoteButton = async (): Promise<void | false> => {
 const init = async (): Promise<void> => {
   // console.log('Repository Name:', getRepoName());
   // console.log('Gist Pathname:', getCleanGistPathname());
-  // console.log('Clean Pathname:', getCleanPathname());
-
+  // console.log('Clean Pathname:', getCleanPathname());;
   await addNoteButton();
   const repoInfo = getRepositoryInfo();
   const currentBranch = getCurrentBranch();
