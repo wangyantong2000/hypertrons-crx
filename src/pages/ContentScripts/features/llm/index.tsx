@@ -72,7 +72,7 @@ function observeDomChanges() {
   const observer = new MutationObserver((mutationsList) => {
     for (const mutation of mutationsList) {
       if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
-        init(); // 在检测到 DOM 变化时重新初始化
+        init();
         break;
       }
     }
@@ -89,7 +89,7 @@ features.add(featureId, {
   awaitDomReady: false,
   init: async () => {
     await init();
-    observeDomChanges(); // 启动 DOM 变化监听器
+    observeDomChanges();
   },
   restore,
 });
