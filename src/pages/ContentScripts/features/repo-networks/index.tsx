@@ -8,7 +8,8 @@ import { getRepoName, isPublicRepoWithMeta } from '../../../../helpers/get-repo-
 import { getRepoNetwork, getDeveloperNetwork } from '../../../../api/repo';
 import View from './view';
 import DataNotFound from './DataNotFound';
-
+import { createRoot } from 'react-dom/client';
+import Chatt from './Chatt';
 const featureId = features.getFeatureID(import.meta.url);
 let repoName: string;
 let repoNetworks: any;
@@ -18,15 +19,15 @@ const getData = async () => {
   repoNetworks = await getRepoNetwork(repoName);
   developerNetworks = await getDeveloperNetwork(repoName);
 };
-
-const renderTo = (container: Container) => {
-  if (!repoNetworks || !developerNetworks) {
-    render(<DataNotFound />, container);
-    return;
+const renderTo = (container:any) => {
+  try {
+    const root = createRoot(container);
+    root.render(<Chatt />);
+  } catch (error) {
+    console.error('Error during rendering:', error);
   }
-  render(<View currentRepo={repoName} repoNetwork={repoNetworks} developerNetwork={developerNetworks} />, container);
-};
 
+};
 const init = async (): Promise<void> => {
   repoName = getRepoName();
   await getData();
@@ -36,20 +37,9 @@ const init = async (): Promise<void> => {
   $('#hypercrx-perceptor-slot-repo-networks').append(container);
 };
 
-const restore = async () => {
-  // Clicking another repo link in one repo will trigger a turbo:visit,
-  // so in a restoration visit we should be careful of the current repo.
-  if (repoName !== getRepoName()) {
-    repoName = getRepoName();
-    await getData();
-  }
-  // rerender the chart or it will be empty
-  renderTo($(`#${featureId}`)[0]);
-};
-
 features.add(featureId, {
   asLongAs: [isPerceptor, isPublicRepoWithMeta],
   awaitDomReady: false,
   init,
-  restore,
+  
 });

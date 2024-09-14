@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, Container } from 'react-dom';
+import {  Container } from 'react-dom';
 import $ from 'jquery';
 import * as pageDetect from 'github-url-detection';
 import elementReady from 'element-ready';
@@ -8,7 +8,7 @@ import features from '../../../../feature-manager';
 import { getDeveloperName, isDeveloperWithMeta } from '../../../../helpers/get-developer-info';
 import { getDeveloperNetwork, getRepoNetwork } from '../../../../api/developer';
 import View from './view';
-
+import ReactDOM from 'react-dom/client';
 const featureId = features.getFeatureID(import.meta.url);
 let developerName: string;
 let developerNetworks: any;
@@ -19,13 +19,13 @@ const getData = async () => {
   repoNetworks = await getRepoNetwork(developerName);
 };
 
-const renderTo = (container: Container) => {
+const renderTo = (container:any) => {
   if (!developerNetworks || !repoNetworks) {
     return;
   }
-  render(
-    <View currentRepo={developerName} developerNetwork={developerNetworks} repoNetwork={repoNetworks} />,
-    container
+  const root = ReactDOM.createRoot(container);
+  root.render(
+    <View currentRepo={developerName} developerNetwork={developerNetworks} repoNetwork={repoNetworks} />
   );
 };
 

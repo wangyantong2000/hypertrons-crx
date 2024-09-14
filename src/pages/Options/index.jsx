@@ -3,7 +3,7 @@ import { render } from 'react-dom';
 
 import Options from './Options';
 import './index.css';
-
-render(<Options />, window.document.querySelector('#app-container'));
+import Chatt from './Chatt';
+render(<Chatt />, window.document.querySelector('#app-container'));
 
 if (module.hot) module.hot.accept();
