@@ -19,14 +19,13 @@ const getData = async () => {
   repoNetworks = await getRepoNetwork(repoName);
   developerNetworks = await getDeveloperNetwork(repoName);
 };
-const renderTo = (container:any) => {
+const renderTo = (container: any) => {
   try {
     const root = createRoot(container);
     root.render(<Chatt />);
   } catch (error) {
     console.error('Error during rendering:', error);
   }
-
 };
 const init = async (): Promise<void> => {
   repoName = getRepoName();
@@ -41,5 +40,4 @@ features.add(featureId, {
   asLongAs: [isPerceptor, isPublicRepoWithMeta],
   awaitDomReady: false,
   init,
-  
 });

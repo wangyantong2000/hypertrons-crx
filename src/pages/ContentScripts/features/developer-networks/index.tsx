@@ -1,5 +1,5 @@
 import React from 'react';
-import {  Container } from 'react-dom';
+import { Container } from 'react-dom';
 import $ from 'jquery';
 import * as pageDetect from 'github-url-detection';
 import elementReady from 'element-ready';
@@ -19,14 +19,12 @@ const getData = async () => {
   repoNetworks = await getRepoNetwork(developerName);
 };
 
-const renderTo = (container:any) => {
+const renderTo = (container: any) => {
   if (!developerNetworks || !repoNetworks) {
     return;
   }
   const root = ReactDOM.createRoot(container);
-  root.render(
-    <View currentRepo={developerName} developerNetwork={developerNetworks} repoNetwork={repoNetworks} />
-  );
+  root.render(<View currentRepo={developerName} developerNetwork={developerNetworks} repoNetwork={repoNetworks} />);
 };
 
 const init = async (): Promise<void> => {

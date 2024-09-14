@@ -4,7 +4,7 @@ import Graph from '../../../../components/Graph';
 import optionsStorage, { HypercrxOptions, defaults } from '../../../../options-storage';
 import { useTranslation } from 'react-i18next';
 import '../../../../helpers/i18n';
-import Chatt from './Chatt'
+import Chatt from './Chatt';
 const DEVELOPER_PERIOD = 90;
 const REPO_PERIOD = 90;
 
@@ -41,7 +41,7 @@ const View = ({ currentRepo, repoNetwork, developerNetwork }: Props): JSX.Elemen
         <div className="d-flex flex-wrap flex-items-center">
           <div className="col-12 col-md-8">
             <div style={{ margin: '10px 0 20px 20px' }}>
-              <Chatt/>
+              <Chatt />
             </div>
           </div>
           <div className="col-12 col-md-4">
