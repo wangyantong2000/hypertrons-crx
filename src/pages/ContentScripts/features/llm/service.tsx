@@ -14,7 +14,7 @@ import { Button, Divider, Flex, message } from 'antd';
 import eventEmitter from '../../../../helpers/eventEmitter';
 import { getResponse } from '../oss-chat/service';
 import { set } from 'lodash-es';
-const openaiKey = 'sk-cc97b460219f4785a1e13681641bb326';
+const openaiKey = '';
 const openaiModel = 'deepseek-chat';
 const model = new ChatOpenAI({
   apiKey: openaiKey,

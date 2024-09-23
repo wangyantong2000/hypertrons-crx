@@ -12,7 +12,7 @@ export async function POST(request: Request) {
   });
   const openai = createOpenAI({
     // custom settings, e.g.
-    apiKey: 'sk-cc97b460219f4785a1e13681641bb326', // your openai key
+    apiKey: 'sk-', // your openai key
     baseURL: 'https://api.deepseek.com/v1', // if u dont need change baseUrl，you can delete this line
     compatibility: 'compatible',
   });
