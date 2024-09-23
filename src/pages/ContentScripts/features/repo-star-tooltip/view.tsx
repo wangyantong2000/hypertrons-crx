@@ -26,7 +26,7 @@ const View = ({ stars, meta }: Props): JSX.Element | null => {
   }, [options.locale]);
 
   if (!stars) return null;
-
+  console.log(111);
   return (
     <>
       <div

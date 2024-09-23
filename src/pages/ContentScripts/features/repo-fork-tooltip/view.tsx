@@ -26,7 +26,7 @@ const View = ({ forks, meta }: Props): JSX.Element | null => {
   }, [options.locale]);
 
   if (!forks) return null;
-
+  console.log(1);
   return (
     <>
       <div

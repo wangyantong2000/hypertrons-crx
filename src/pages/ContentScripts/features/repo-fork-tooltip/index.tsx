@@ -27,6 +27,7 @@ const init = async (): Promise<void> => {
   const forkButtonSelector = '#fork-button';
   await elementReady(forkButtonSelector);
   const $forkButton = $(forkButtonSelector);
+  console.log($(forkButtonSelector));
   const placeholderElement = $('<div class="NativePopover" />').appendTo('body')[0];
   render(
     <NativePopover anchor={$forkButton} width={280} arrowPosition="top-middle">

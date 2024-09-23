@@ -5,7 +5,7 @@ import $ from 'jquery';
 
 import features from '../../../../feature-manager';
 import getGithubTheme from '../../../../helpers/get-github-theme';
-import { getRepoName, isPublicRepo } from '../../../../helpers/get-repo-info';
+import { getRepoName, getUsername, isPublicRepo } from '../../../../helpers/get-repo-info';
 import View from './view';
 import ReactDOM from 'react-dom/client';
 
@@ -18,11 +18,9 @@ const renderTo = (container: any) => {
 
 const init = async (): Promise<void> => {
   repoName = getRepoName();
-
   const container = document.createElement('div');
   container.id = featureId;
   container.dataset.repo = repoName; // mark current repo by data-repo
-  console.log(container);
   renderTo(container);
   document.body.appendChild(container);
 
@@ -41,6 +39,6 @@ const init = async (): Promise<void> => {
 
 features.add(featureId, {
   include: [isPublicRepo],
-  awaitDomReady: false,
+  awaitDomReady: true,
   init,
 });

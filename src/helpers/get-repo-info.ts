@@ -41,3 +41,6 @@ export async function getRepositoryInfo() {
 export async function hasCode() {
   return pageDetect.hasCode();
 }
+export function getUsername() {
+  return pageDetect.utils.getUsername();
+}

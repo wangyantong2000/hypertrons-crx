@@ -32,7 +32,10 @@ let options = {
     options: path.join(__dirname, 'src', 'pages', 'Options', 'index.jsx'),
     popup: path.join(__dirname, 'src', 'pages', 'Popup', 'index.jsx'),
     background: path.join(__dirname, 'src', 'pages', 'Background', 'index.ts'),
-    contentScript: path.join(__dirname, 'src', 'pages', 'ContentScripts', 'index.ts'),
+    contentScript: [
+      path.join(__dirname, 'src', 'pages', 'ContentScripts', 'index.ts'),
+      // 'shiki', // 将 shiki 添加为依赖
+    ],
   },
   // "custom" is not a standard key of webpack options
   // it will be consumed by utils/server.js and must be deleted before webpack(config)
@@ -42,7 +45,8 @@ let options = {
     enableContentScriptsAutoReload: true,
   },
   output: {
-    filename: '[name].bundle.js',
+    filename: '[name].bundle.js', // 输出到单个文件
+    // chunkFilename: '[name].bundle.js', // 确保 chunk 有固定命名规则
     path: path.resolve(__dirname, 'build'),
     clean: true,
     publicPath: ASSET_PATH,
@@ -101,16 +105,29 @@ let options = {
         ],
         exclude: /node_modules/,
       },
+      // {
+      //   test: /\.wasm$/,
+      //   type: 'javascript/auto',
+      //   loader: 'file-loader'
+      // },
+      {
+        test: /\.wasm$/,
+        use: 'base64-inline-loader',
+      },
+      {
+        test: /\.bundle.js$/,
+        use: 'base64-inline-loader',
+      },
     ],
   },
   resolve: {
     alias: alias,
-    extensions: fileExtensions.map((extension) => '.' + extension).concat(['.js', '.jsx', '.ts', '.tsx', '.css']),
+    extensions: fileExtensions
+      .map((extension) => '.' + extension)
+      .concat(['.js', '.jsx', '.ts', '.tsx', '.css', '.wasm']),
   },
   plugins: [
-    new MiniCssExtractPlugin({
-      filename: '[name].css',
-    }),
+    new MiniCssExtractPlugin(),
     new CleanWebpackPlugin({ verbose: false }),
     new webpack.ProgressPlugin(),
     // expose and write the allowed env vars on the compiled bundle
@@ -166,9 +183,30 @@ let options = {
   infrastructureLogging: {
     level: 'info',
   },
-  devServer: {
-    hot: true,
-  },
+  // optimization: {
+  //   splitChunks: {
+  //     cacheGroups: {
+  //       default: false,
+  //       // 自定义缓存组
+  //       shiki: {
+  //         test: /[\\/]node_modules[\\/]shiki[\\/]/,
+  //         name: 'shiki', // 合并后的文件名
+  //         chunks: 'all',
+  //         enforce: true,
+  //       },
+  //       shikijs: {
+  //         test: /[\\/]node_modules[\\/]@shikijs[\\/]/,
+  //         name: 'shiki', // 合并后的文件名
+  //         chunks: 'all',
+  //         enforce: true,
+  //       },
+  //     },
+  //   },
+  // },
+  // experiments: {
+  //   asyncWebAssembly: true, // 确保支持 WebAssembly
+  //   topLevelAwait: true,    // 如果需要顶层 await 支持
+  // },
 };
 
 if (env.NODE_ENV === 'development') {
