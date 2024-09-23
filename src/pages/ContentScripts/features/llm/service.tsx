@@ -14,18 +14,7 @@ import { Button, Divider, Flex, message } from 'antd';
 import eventEmitter from '../../../../helpers/eventEmitter';
 import { getResponse } from '../oss-chat/service';
 import { set } from 'lodash-es';
-const openaiKey = '';
-const openaiModel = 'deepseek-chat';
-const model = new ChatOpenAI({
-  apiKey: openaiKey,
-  configuration: {
-    baseURL: 'https://api.deepseek.com/v1',
-    fetch,
-  },
-  model: openaiModel,
-  temperature: 0.95, // never use 1.0, some models do not support it
-  maxRetries: 3,
-});
+
 const getTextarea = async () => {
   const textareaElement = (await elementReady('#read-only-cursor-text-area')) as HTMLTextAreaElement;
   return textareaElement.value;

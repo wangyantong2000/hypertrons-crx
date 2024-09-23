@@ -1,6 +1,7 @@
 import React, { useEffect, useState, ReactNode, useRef } from 'react';
-import { ProChat, ProChatProvider, ProChatInstance, ChatItemProps } from '@ant-design/pro-chat';
+import { ProChat, ProChatProvider, ProChatInstance, ChatItemProps, ChatMessage } from '@ant-design/pro-chat';
 import { useTheme } from 'antd-style';
+import { Button, Card, Form, Input } from 'antd';
 import { getUsername } from '../../../../helpers/get-repo-info';
 import { ToggleChat } from '../llm/service';
 import { getResponse, convertChunkToJson } from './service';
@@ -10,9 +11,32 @@ import UserContent from './UserContent';
 import LoadingStart from './LoadingStart';
 import LoadingEnd from './LoadingEnd';
 import Markdown from '../repo-networks/Markdown';
+const UserForm = (props: { name: string; gender: string }) => {
+  return (
+    <Card>
+      <Form
+        initialValues={{
+          name: props.name,
+          gender: props.gender,
+        }}
+      >
+        <Form.Item label="姓名" name={'name'}>
+          <Input />
+        </Form.Item>
+        <Form.Item label="性别" name={'gender'}>
+          <Input />
+        </Form.Item>
+        <Button type="primary" htmlType="submit">
+          Submit
+        </Button>
+      </Form>
+    </Card>
+  );
+};
 const Chat: React.FC = () => {
   const proChatRef = useRef<ProChatInstance>();
   const [complete, setComplete] = useState(false);
+  const [chats, setChats] = useState<ChatMessage<Record<string, any>>[]>([]);
   const theme = useTheme();
   const username = getUsername();
   const avatar = 'https://avatars.githubusercontent.com/u/57651122?s=200&v=4';
@@ -38,6 +62,26 @@ const Chat: React.FC = () => {
         helloMessage=""
         request={async (messages) => {
           return await getResponse(messages.at(-1)?.content?.toString());
+        }}
+        actions={{
+          render: (defaultDoms) => {
+            return [
+              <a
+                key="user"
+                onClick={() => {
+                  setChats([...chats]);
+                }}
+              >
+                选择模型
+              </a>,
+              ...defaultDoms,
+            ];
+          },
+          flexConfig: {
+            gap: 24,
+            direction: 'horizontal',
+            justify: 'space-between',
+          },
         }}
         chatItemRenderConfig={{
           render: (

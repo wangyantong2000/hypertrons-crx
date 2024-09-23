@@ -4,7 +4,7 @@ import View from './view';
 import { forEach } from 'lodash';
 import { ChatPromptTemplate, HumanMessagePromptTemplate, MessagesPlaceholder } from '@langchain/core/prompts';
 import { ImageURLContentBlock, Message, MessageContent, Role } from './interface';
-const openaiKey = '';
+const openaiKey = 'sk-cc97b460219f4785a1e13681641bb326';
 const openaiModel = 'deepseek-chat';
 const model = new ChatOpenAI({
   apiKey: openaiKey,
