@@ -4,18 +4,7 @@ import View from './view';
 import { forEach } from 'lodash';
 import { ChatPromptTemplate, HumanMessagePromptTemplate, MessagesPlaceholder } from '@langchain/core/prompts';
 import { ImageURLContentBlock, Message, MessageContent, Role } from './interface';
-const openaiKey = 'sk-cc97b460219f4785a1e13681641bb326';
-const openaiModel = 'deepseek-chat';
-const model = new ChatOpenAI({
-  apiKey: openaiKey,
-  configuration: {
-    baseURL: 'https://api.deepseek.com/v1',
-    fetch,
-  },
-  model: openaiModel,
-  temperature: 0.95, // never use 1.0, some models do not support it
-  maxRetries: 3,
-});
+
 interface Tool {
   type: string;
   extra: {
@@ -60,10 +49,20 @@ export const convertChunkToJson = (rawData: string) => {
     return { message: messages.join(''), errors };
   }
 };
-export const getResponse = async (messages: any) => {
+const buildPrompt = async () => {
+
+  const basePrompt =
+    '你是来自x-lab实验室的围绕GitHub平台的智能问答机器人';
+ 
+  return prompt;
+};
+export const getResponse = async (messages: any,model: any) => {
   const prompt = ChatPromptTemplate.fromMessages([HumanMessagePromptTemplate.fromTemplate('{input}')].filter(Boolean));
   const chain = prompt.pipe(model);
-  const responseStream = await chain.stream({ input: messages });
+  const basePrompt =
+  '你是来自x-lab实验室的围绕GitHub平台的智能问答机器人';
+    const responseStream = await chain.stream({ input:basePrompt+messages });
   //   const responseStream=await model.stream([new HumanMessage({ content: messages })]);
   return handleStream(responseStream);
+
 };
