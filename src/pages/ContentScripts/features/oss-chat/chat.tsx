@@ -104,6 +104,13 @@ const Chat: React.FC = () => {
           }}
         >
           <Form.Item
+            label="模型配置"
+            name={'modelName'}
+            rules={[{ required: true, message: 'Please input your modelName!' }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
             label="接口路径"
             name={'baseUrl'}
             rules={[{ required: true, message: 'Please input your baseUrl!' }]}
@@ -115,15 +122,9 @@ const Chat: React.FC = () => {
             name={'apiKey'}
             rules={[{ required: true, message: 'Please input your apiKey!' }]}
           >
-            <Input />
+            <Input.Password />
           </Form.Item>
-          <Form.Item
-            label="模型配置"
-            name={'modelName'}
-            rules={[{ required: true, message: 'Please input your modelName!' }]}
-          >
-            <Input />
-          </Form.Item>
+
           <Form.Item style={{ textAlign: 'center', marginBottom: '0' }}>
             {' '}
             {/* 添加居中样式 */}
