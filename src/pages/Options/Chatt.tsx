@@ -16,7 +16,7 @@ const Chat: React.FC = () => {
   const theme = useTheme();
   const username = getUsername();
   const avatar = 'https://avatars.githubusercontent.com/u/57651122?s=200&v=4';
-  const {baseUrl,apiKey,modelName } = getLLMInfo()
+  const { baseUrl, apiKey, modelName } = getLLMInfo();
   const model = new ChatOpenAI({
     apiKey: apiKey,
     configuration: {
@@ -35,7 +35,7 @@ const Chat: React.FC = () => {
         userMeta={{ avatar: `https://github.com/${username}.png` }}
         assistantMeta={{ avatar: avatar }}
         request={async (messages) => {
-          return await getResponse(messages.at(-1)?.content?.toString(),model);
+          return await getResponse(messages.at(-1)?.content?.toString(), model);
         }}
       />
     </div>

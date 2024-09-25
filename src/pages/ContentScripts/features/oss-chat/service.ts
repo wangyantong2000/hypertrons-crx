@@ -50,19 +50,15 @@ export const convertChunkToJson = (rawData: string) => {
   }
 };
 const buildPrompt = async () => {
+  const basePrompt = '你是来自x-lab实验室的围绕GitHub平台的智能问答机器人';
 
-  const basePrompt =
-    '你是来自x-lab实验室的围绕GitHub平台的智能问答机器人';
- 
   return prompt;
 };
-export const getResponse = async (messages: any,model: any) => {
+export const getResponse = async (messages: any, model: any) => {
   const prompt = ChatPromptTemplate.fromMessages([HumanMessagePromptTemplate.fromTemplate('{input}')].filter(Boolean));
   const chain = prompt.pipe(model);
-  const basePrompt =
-  '你是来自x-lab实验室的围绕GitHub平台的智能问答机器人';
-    const responseStream = await chain.stream({ input:basePrompt+messages });
+  const basePrompt = '你是来自x-lab实验室的围绕GitHub平台的智能问答机器人';
+  const responseStream = await chain.stream({ input: basePrompt + messages });
   //   const responseStream=await model.stream([new HumanMessage({ content: messages })]);
   return handleStream(responseStream);
-
 };

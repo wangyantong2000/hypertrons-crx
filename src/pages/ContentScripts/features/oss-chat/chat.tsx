@@ -1,5 +1,12 @@
 import React, { useEffect, useState, ReactNode, useRef } from 'react';
-import { ProChat,useProChat, ProChatProvider, ProChatInstance, ChatItemProps, ChatMessage } from '@ant-design/pro-chat';
+import {
+  ProChat,
+  useProChat,
+  ProChatProvider,
+  ProChatInstance,
+  ChatItemProps,
+  ChatMessage,
+} from '@ant-design/pro-chat';
 import { useTheme } from 'antd-style';
 import { Button, Card, Form, Input } from 'antd';
 import { getUsername } from '../../../../helpers/get-repo-info';
@@ -13,7 +20,7 @@ import LoadingEnd from './LoadingEnd';
 import Markdown from '../repo-networks/Markdown';
 import type { FormProps } from 'antd';
 import { v4 as uuidv4 } from 'uuid';
-import { saveLLMInfo,getLLMInfo } from '../../../../helpers/LLM-info';
+import { saveLLMInfo, getLLMInfo } from '../../../../helpers/LLM-info';
 import { ChatOpenAI } from '@langchain/openai';
 import { set } from 'lodash-es';
 type FieldType = {
@@ -54,7 +61,7 @@ const Chat: React.FC = () => {
       temperature: 0.95,
       maxRetries: 3,
     });
-  
+
     try {
       const response = await testLLM.invoke([{ role: 'user', content: '你好' }]);
       return response; // 返回模型的回答
@@ -62,51 +69,64 @@ const Chat: React.FC = () => {
       return null;
     }
   };
-  const onFinish: FormProps<FieldType>['onFinish'] = async(values) => {
-    saveLLMInfo(values.baseUrl,values.apiKey,values.modelName);
+  const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
+    saveLLMInfo(values.baseUrl, values.apiKey, values.modelName);
     setModelConfig(values);
     createLLMInstance(values);
-    
+
     const testResponse = await testLLMInstance(values);
-    if(testResponse==null){
-      setChats(
-        [...chats,{
+    if (testResponse == null) {
+      setChats([
+        ...chats,
+        {
           content: '配置信息有误，请再次确认，输入正确的信息',
           id: uuidv4(),
           role: 'assistant',
-          avatar:avatar,
-          title:'',
+          avatar: avatar,
+          title: '',
           updateAt: Date.now(),
           createAt: Date.now(),
-        },]
-      )
-    }else{
-      setChats(
-        []
-      )
+        },
+      ]);
+    } else {
+      setChats([]);
     }
   };
   const UserForm = (props: { name: string; gender: string; model: string }) => {
     return (
-      <Card style={{width:'400px',height:'auto'}} >
+      <Card style={{ width: '400px', height: 'auto' }}>
         <Form
-           onFinish={onFinish}
-           initialValues={{
-             baseUrl: modelConfig?.baseUrl,
+          onFinish={onFinish}
+          initialValues={{
+            baseUrl: modelConfig?.baseUrl,
             apiKey: modelConfig?.apiKey,
-            modelName: modelConfig?.modelName
+            modelName: modelConfig?.modelName,
           }}
         >
-          <Form.Item label="接口路径" name={'baseUrl'} rules={[{ required: true, message: 'Please input your baseUrl!' }]}>
+          <Form.Item
+            label="接口路径"
+            name={'baseUrl'}
+            rules={[{ required: true, message: 'Please input your baseUrl!' }]}
+          >
             <Input />
           </Form.Item>
-          <Form.Item label="密钥配置" name={'apiKey'} rules={[{ required: true, message: 'Please input your apiKey!' }]}>
+          <Form.Item
+            label="密钥配置"
+            name={'apiKey'}
+            rules={[{ required: true, message: 'Please input your apiKey!' }]}
+          >
             <Input />
           </Form.Item>
-          <Form.Item label="模型配置" name={'modelName'} rules={[{ required: true, message: 'Please input your modelName!' }]}>
+          <Form.Item
+            label="模型配置"
+            name={'modelName'}
+            rules={[{ required: true, message: 'Please input your modelName!' }]}
+          >
             <Input />
           </Form.Item>
-          <Form.Item style={{ textAlign: 'center' ,marginBottom:'0'}}> {/* 添加居中样式 */}
+          <Form.Item style={{ textAlign: 'center', marginBottom: '0' }}>
+            {' '}
+            {/* 添加居中样式 */}
             <Button type="primary" htmlType="submit">
               确认
             </Button>
@@ -125,14 +145,14 @@ const Chat: React.FC = () => {
       maxRetries: 3,
     });
     setLLMInstance(model);
-    setModelConfig(config)
+    setModelConfig(config);
   };
   useEffect(() => {
     // 在组件加载时检查并创建 LLM 实例
     const info = getLLMInfo();
     if (info.baseUrl && info.apiKey && info.modelName) {
       createLLMInstance(info);
-    } 
+    }
   }, []);
   return (
     <div style={{ background: theme.colorBgLayout, width: 600, height: 550 }}>
@@ -148,42 +168,40 @@ const Chat: React.FC = () => {
             // 插入一条消息，提示用户先填写配置信息
             setChats([
               {
-                content: JSON.stringify({ }),
+                content: JSON.stringify({}),
                 id: uuidv4(),
                 role: 'user-form',
-                avatar:avatar,
-                title:'',
+                avatar: avatar,
+                title: '',
                 updateAt: Date.now(),
                 createAt: Date.now(),
               },
             ]);
             return;
           }
-          try{
-            return await getResponse(messages.at(-1)?.content?.toString(),llmInstance);
-          }catch (error:any) {
+          try {
+            return await getResponse(messages.at(-1)?.content?.toString(), llmInstance);
+          } catch (error: any) {
             return error.message;
           }
         }}
-  
         actions={{
           render: (defaultDoms) => {
             return [
               <a
                 key="user"
                 onClick={() => {
-                  console.log
+                  console.log;
                   setChats([
                     {
-                      content: JSON.stringify({ }),
+                      content: JSON.stringify({}),
                       id: uuidv4(),
                       role: 'user-form',
-                      avatar:avatar,
-                      title:'',
+                      avatar: avatar,
+                      title: '',
                       updateAt: Date.now(),
                       createAt: Date.now(),
                     },
-                    
                   ]);
                 }}
               >
@@ -242,16 +260,18 @@ const Chat: React.FC = () => {
               );
             }
             if (originData?.role === 'user-form') {
-              return <ChatItemRender
+              return (
+                <ChatItemRender
                   direction={'start'}
                   avatar={domsMap.avatar}
                   title={title}
                   content={
                     <div className="leftMessageContent">
-                     <UserForm {...JSON.parse(originData?.content)} />
+                      <UserForm {...JSON.parse(originData?.content)} />
                     </div>
                   }
                 />
+              );
             }
             if (originData?.role === 'user') {
               try {
