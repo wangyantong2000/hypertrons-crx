@@ -3,6 +3,22 @@ import { ChatPromptTemplate, HumanMessagePromptTemplate, MessagesPlaceholder } f
 import type { RunnableConfig } from '@langchain/core/runnables';
 import { RunnableWithMessageHistory } from '@langchain/core/runnables';
 import { ChatMessageHistory } from 'langchain/stores/message/in_memory';
+import { ChatOpenAI } from '@langchain/openai';
+let llmInstance: ChatOpenAI | null = null;
+
+export const getLLMInstance = (config: any) => {
+  if (!llmInstance) {
+    const { baseUrl, apiKey, modelName } = config;
+    llmInstance = new ChatOpenAI({
+      apiKey,
+      configuration: { baseURL: baseUrl },
+      model: modelName,
+      temperature: 0.95,
+      maxRetries: 3,
+    });
+  }
+  return llmInstance;
+};
 export const handleStream = async (stream: any) => {
   const encoder = new TextEncoder();
 

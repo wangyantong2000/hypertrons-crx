@@ -3,7 +3,7 @@ import { ProChat, ProChatProvider, ProChatInstance, ChatItemProps, ChatMessage }
 import { useTheme } from 'antd-style';
 import { Button, Card, Form, Input } from 'antd';
 import { getUsername } from '../../../../helpers/get-repo-info';
-import { getResponse, convertChunkToJson } from './service';
+import { getResponse, convertChunkToJson, getLLMInstance } from './service';
 import StarterList from './StarterList';
 import ChatItemRender from './ChatItemRender';
 import UserContent from './UserContent';
@@ -133,14 +133,7 @@ const Chat: React.FC<Props> = ({ githubTheme }) => {
     );
   };
   const createLLMInstance = (config: any) => {
-    const { baseUrl, apiKey, modelName } = config;
-    const model = new ChatOpenAI({
-      apiKey,
-      configuration: { baseURL: baseUrl },
-      model: modelName,
-      temperature: 0.95,
-      maxRetries: 3,
-    });
+    const model = getLLMInstance(config); // 使用单例模式获取 LLM 实例
     setLLMInstance(model);
     setModelConfig(config);
   };
@@ -193,7 +186,6 @@ const Chat: React.FC<Props> = ({ githubTheme }) => {
                 sessionId: sessionId,
               },
             };
-            console.log();
             return await getResponse(messages.at(-1)?.content?.toString(), llmInstance, aiRunnableConfig, memory);
           } catch (error: any) {
             return error.message;
