@@ -4,6 +4,7 @@ import features from '../../../../feature-manager';
 import getGithubTheme from '../../../../helpers/get-github-theme';
 import { getRepoName, isPublicRepo } from '../../../../helpers/get-repo-info';
 import View from './view';
+import isGithub from '../../../../helpers/is-github';
 import { createRoot, Root } from 'react-dom/client';
 const featureId = features.getFeatureID(import.meta.url);
 let repoName: string;
@@ -33,7 +34,7 @@ const init = async (): Promise<void> => {
 };
 
 features.add(featureId, {
-  include: [isPublicRepo],
+  include: [isGithub, isPublicRepo],
   awaitDomReady: true,
   init,
 });

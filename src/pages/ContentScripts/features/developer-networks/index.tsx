@@ -4,19 +4,20 @@ import { createRoot } from 'react-dom/client';
 import elementReady from 'element-ready';
 
 import features from '../../../../feature-manager';
-import { isUserProfile } from '../../../../helpers/get-developer-info';
+import { getDeveloperName, isUserProfile } from '../../../../helpers/get-developer-info';
 import View from './view';
+import isGithub from '../../../../helpers/is-github';
 
 const featureId = features.getFeatureID(import.meta.url);
 
-let userID: any;
+let userName: string;
 
 const renderTo = (container: any) => {
-  createRoot(container).render(<View userID={userID} />);
+  createRoot(container).render(<View userName={userName} />);
 };
 
 const init = async (): Promise<void> => {
-  userID = $('meta[name="octolytics-dimension-user_id"]').attr('content');
+  userName = getDeveloperName();
   const container = document.createElement('div');
   container.id = featureId;
   renderTo(container);
@@ -33,7 +34,7 @@ const restore = async () => {
 };
 
 features.add(featureId, {
-  asLongAs: [isUserProfile],
+  asLongAs: [isGithub, isUserProfile],
   awaitDomReady: false,
   init,
   restore,

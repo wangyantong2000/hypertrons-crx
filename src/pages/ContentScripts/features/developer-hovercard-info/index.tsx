@@ -4,6 +4,7 @@ import elementReady from 'element-ready';
 import React from 'react';
 import View from './view';
 import { createRoot } from 'react-dom/client';
+import isGithub from '../../../../helpers/is-github';
 const featureId = features.getFeatureID(import.meta.url);
 let isInitialized = false;
 
@@ -36,6 +37,11 @@ const getDeveloperName = (target: HTMLElement): string | null => {
 };
 
 const renderTo = (container: HTMLElement, developerName: string, openrank: string) => {
+  const parentElement = container.parentNode?.parentElement?.parentElement;
+  const hovercardUrl = parentElement?.getAttribute('data-hovercard-target-url');
+  if (!hovercardUrl || !hovercardUrl.startsWith('/users')) {
+    return;
+  }
   const openRankContainer = document.createElement('div');
   container.appendChild(openRankContainer);
   createRoot(openRankContainer).render(<View developerName={developerName} openrank={openrank} />);
@@ -133,6 +139,7 @@ const init = async (): Promise<void> => {
 };
 
 features.add(featureId, {
+  asLongAs: [isGithub],
   awaitDomReady: false,
   init,
 });

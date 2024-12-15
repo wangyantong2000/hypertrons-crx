@@ -2,12 +2,9 @@ import getGithubTheme from '../../../../helpers/get-github-theme';
 import { isNull } from '../../../../helpers/is-null';
 import { numberWithCommas } from '../../../../helpers/formatter';
 import optionsStorage, { HypercrxOptions, defaults } from '../../../../options-storage';
-import { rocketLight, rocketDark } from './base64';
 import generateDataByMonth from '../../../../helpers/generate-data-by-month';
 import { RepoMeta } from '../../../../api/common';
-
 import React, { useState, useEffect } from 'react';
-
 import { useTranslation } from 'react-i18next';
 import '../../../../helpers/i18n';
 const githubTheme = getGithubTheme();
@@ -36,28 +33,8 @@ const View = ({ activity, openrank, participant, contributor, meta }: Props): JS
   const openrankData = generateDataByMonth(openrank, meta.updatedAt);
   const participantData = generateDataByMonth(participant, meta.updatedAt);
   const contributorData = generateDataByMonth(contributor, meta.updatedAt);
-
-  // define a type to describe the structure of Label
-  type Label = {
-    id: string;
-    name: string;
-    type: string;
-  };
-
-  const labels: Label[] = (meta.labels ?? []) as Label[];
-
-  const meta_labels = labels.map((label) => (
-    <span
-      key={label.id} // use label.id as the key
-      id={label.id}
-      className="Label Label--secondary v-align-middle mr-1 unselectable"
-      style={{
-        color: githubTheme === 'light' ? '#24292f' : '#c9d1d9',
-      }}
-    >
-      {label.name}
-    </span>
-  ));
+  const rocketLightLogo = chrome.runtime.getURL('rocketLightLogo.png');
+  const rocketDarkLogo = chrome.runtime.getURL('rocketDarkLogo.png');
 
   return (
     <div className="d-flex">
@@ -110,7 +87,7 @@ const View = ({ activity, openrank, participant, contributor, meta }: Props): JS
           width={16}
           height={16}
           style={{ float: 'left' }}
-          src={githubTheme === 'light' ? rocketLight : rocketDark}
+          src={githubTheme === 'light' ? rocketLightLogo : rocketDarkLogo}
           alt=""
         />
         {numberWithCommas(Math.round(openrankData[openrankData.length - 1][1]))}
@@ -147,8 +124,6 @@ const View = ({ activity, openrank, participant, contributor, meta }: Props): JS
         {numberWithCommas(contributorData[contributorData.length - 1][1])}/
         {numberWithCommas(participantData[participantData.length - 1][1])}
       </span>
-
-      {meta_labels}
     </div>
   );
 };

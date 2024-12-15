@@ -1,13 +1,16 @@
-import { getToken, saveToken } from '../helpers/github-token';
+import { getGithubToken, saveGithubToken } from '../helpers/github-token';
 
 export const githubRequest = async (endpoint: string, options: RequestInit = {}): Promise<any | null> => {
-  const token = getToken();
+  const token = await getGithubToken();
   if (!token) {
     return null;
   }
 
   try {
     const response = await fetch(`https://api.github.com${endpoint}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
       ...options,
     });
     return response.json();
@@ -16,4 +19,4 @@ export const githubRequest = async (endpoint: string, options: RequestInit = {})
   }
 };
 
-export { saveToken, getToken };
+export { saveGithubToken, getGithubToken };

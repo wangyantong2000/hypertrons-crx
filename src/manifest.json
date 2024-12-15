@@ -12,7 +12,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["*://github.com/*"],
+      "matches": ["<all_urls>"],
       "js": ["contentScript.bundle.js"],
       "css": ["contentScript.css"],
       "run_at": "document_idle"
@@ -20,13 +20,23 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": ["main.png"],
+      "resources": [
+        "main.png",
+        "osGraphLogo.png",
+        "openDiggerLogo.png",
+        "rocketDarkLogo.png",
+        "rocketLightLogo.png",
+        "sandbox.html"
+      ],
       "matches": ["<all_urls>"]
     }
   ],
-  "permissions": ["storage", "notifications", "alarms", "cookies"],
-  "host_permissions": ["*://github.com/*"],
+  "permissions": ["storage", "identity"],
+  "host_permissions": ["<all_urls>"],
   "content_security_policy": {
     "extension_pages": "script-src 'self'; object-src 'self';"
+  },
+  "sandbox": {
+    "pages": ["sandbox.html"]
   }
 }
