@@ -17,6 +17,7 @@ import optionsStorage, { HypercrxOptions, defaults } from '../../../../options-s
 import { useTranslation } from 'react-i18next';
 import type { RunnableConfig } from '@langchain/core/runnables';
 import { ChatMessageHistory } from 'langchain/stores/message/in_memory';
+import { ToggleChat } from '../auto-code-annotator/service';
 import '../../../../helpers/i18n';
 interface FieldType {
   baseUrl: string;
@@ -32,7 +33,7 @@ const Chat: React.FC<Props> = ({ githubTheme }) => {
   const proChatRef = useRef<ProChatInstance>();
   const [complete, setComplete] = useState(false);
   const [chats, setChats] = useState<any[]>([]);
-  const [llmInstance, setLLMInstance] = useState<any>(null);
+  const [llmInstance, setLlmInstance] = useState<any>(null);
   const [modelConfig, setModelConfig] = useState<any>(null);
   const theme = useTheme();
   const avatar = 'https://avatars.githubusercontent.com/u/57651122?s=200&v=4';
@@ -71,7 +72,7 @@ const Chat: React.FC<Props> = ({ githubTheme }) => {
   };
   const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
     saveLLMInfo(values.baseUrl, values.apiKey, values.modelName);
-    createLLMInstance(values);
+    await createLLMInstance(values);
     const testResponse = await testLLMInstance(values);
     if (testResponse == null) {
       setChats([
@@ -132,17 +133,19 @@ const Chat: React.FC<Props> = ({ githubTheme }) => {
       </Card>
     );
   };
-  const createLLMInstance = (config: any) => {
-    const model = getLLMInstance(config); // 使用单例模式获取 LLM 实例
-    setLLMInstance(model);
-    setModelConfig(config);
+  const createLLMInstance = async (config: any) => {
+    const model = getLLMInstance(config);
+    await setLlmInstance(model);
+    await setModelConfig(config);
   };
 
   useEffect(() => {
-    const info = getLLMInfo();
-    if (info.baseUrl && info.apiKey && info.modelName) {
-      createLLMInstance(info);
-    }
+    (async () => {
+      const info = getLLMInfo();
+      if (info.baseUrl && info.apiKey && info.modelName) {
+        createLLMInstance(info);
+      }
+    })();
   }, []);
 
   useEffect(() => {
@@ -353,6 +356,7 @@ const Chat: React.FC<Props> = ({ githubTheme }) => {
 };
 const OssGpt: React.FC<Props> = ({ githubTheme }) => (
   <ProChatProvider>
+    <ToggleChat />
     <Chat githubTheme={githubTheme} />
   </ProChatProvider>
 );

@@ -9,8 +9,20 @@ interface Props {
 }
 const View = ({ githubTheme }: Props): JSX.Element => {
   const [isOpen, setIsOpen] = useState(false);
+  useEffect(() => {
+    const handleToggle = (newState: boolean) => {
+      setIsOpen(newState);
+    };
+
+    eventEmitter.on('toggleIsOpen', handleToggle);
+
+    return () => {
+      eventEmitter.off('toggleIsOpen', handleToggle);
+    };
+  }, []);
   const switchIcon = () => {
     setIsOpen(!isOpen);
+    eventEmitter.emit('toggleIsOpen', !isOpen);
   };
   return (
     <ThemeProvider

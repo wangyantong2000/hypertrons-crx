@@ -52,3 +52,9 @@ export async function isPublicRepoWithMeta() {
 export function getUsername() {
   return pageDetect.utils.getUsername();
 }
+export async function hasCode() {
+  return pageDetect.hasCode();
+}
+export async function getRepositoryInfo() {
+  return pageDetect.utils.getRepositoryInfo();
+}
