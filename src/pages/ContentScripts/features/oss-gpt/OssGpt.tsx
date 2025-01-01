@@ -19,6 +19,8 @@ import type { RunnableConfig } from '@langchain/core/runnables';
 import { ChatMessageHistory } from 'langchain/stores/message/in_memory';
 import { ToggleChat } from '../auto-code-annotator/service';
 import '../../../../helpers/i18n';
+import { getDocumentSummary } from './documentSummary';
+import { getProjectAnalysis } from './projectAnalysis';
 interface FieldType {
   baseUrl: string;
   apiKey: string;
@@ -43,7 +45,7 @@ const Chat: React.FC<Props> = ({ githubTheme }) => {
   const helloMessage = t('oss_gpt_hello_message');
   const starters = [t('oss_gpt_starters_introduce')];
   const sessionId = uuidv4();
-
+  let shouldDisplayLink = false;
   let memory = new ChatMessageHistory();
   const botInfo = {
     assistantMeta: {
@@ -196,27 +198,33 @@ const Chat: React.FC<Props> = ({ githubTheme }) => {
         }}
         actions={{
           render: (defaultDoms) => {
-            return [
-              <a
-                key="user"
-                onClick={() => {
-                  setChats([
-                    {
-                      content: JSON.stringify({}),
-                      id: uuidv4(),
-                      role: 'user-form',
-                      avatar: avatar,
-                      title: '',
-                      updateAt: Date.now(),
-                      createAt: Date.now(),
-                    },
-                  ]);
-                }}
-              >
-                {t('oss_gpt_llm_switch')}
-              </a>,
+            const elements = [
+              <div key="left-group" style={{ display: 'flex', gap: '24px' }}>
+                <a
+                  onClick={() => {
+                    setChats([
+                      {
+                        content: JSON.stringify({}),
+                        id: uuidv4(),
+                        role: 'user-form',
+                        avatar: avatar,
+                        title: '',
+                        updateAt: Date.now(),
+                        createAt: Date.now(),
+                      },
+                    ]);
+                  }}
+                >
+                  {t('oss_gpt_llm_switch')}
+                </a>
+
+                <a onClick={() => getDocumentSummary(proChatRef)}>{t('oss_gpt_summary')}</a>
+
+                <a onClick={() => getProjectAnalysis(proChatRef)}>{t('oss_gpt_analysis')}</a>
+              </div>,
               ...defaultDoms,
             ];
+            return elements.filter((element): element is React.ReactElement => element !== null);
           },
           flexConfig: {
             gap: 24,

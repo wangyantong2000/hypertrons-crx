@@ -136,5 +136,9 @@
   "oss_gpt_api_key": "API Key",
   "oss_gpt_api_key_rule_message": "Please enter API key!",
   "oss_gpt_llm_info_btn": "confirm",
-  "oss_gpt_llm_switch": "Switch Model"
+  "oss_gpt_llm_switch": "Switch Model",
+  "oss_gpt_summary": "Document Summary",
+  "oss_gpt_analysis": "Project Analysis",
+  "oss_gpt_summary_error": "There is no document file on this page.",
+  "oss_gpt_analysis_error": "The project has too little data to support project analysis functionality."
 }
